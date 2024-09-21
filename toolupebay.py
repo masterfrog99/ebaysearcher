@@ -3,7 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 
 url = 'https://www.ebay.com/sch/i.html?_nkw=playstation+5'
-classname = 's-item__price'
 useragent = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'
 }
@@ -13,6 +12,7 @@ if response.status_code == 200:
     parse = BeautifulSoup(response.content, 'html.parser')
     
     with open("playstation5_listings.html", "w") as file:
+        # styling the output
         file.write("""
         <html>
         <head>
@@ -38,6 +38,7 @@ if response.status_code == 200:
         """)
         listings = parse.findAll('li', class_='s-item')
         
+        # organizing wanted data and filtering output       
         for listing in listings:
             title_tag = listing.find('div', class_='s-item__title')
             price_tag = listing.find('span', class_='s-item__price')
@@ -54,8 +55,9 @@ if response.status_code == 200:
             </div>
             """
 
-            print(output.strip())
+            print(output.strip()) # optional
             
+            # updating file
             file.write(output)
         file.write("<html><body>\n")
 else:
